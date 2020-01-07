@@ -6,10 +6,11 @@ import com.jdbc.mantenimiento.input.Conversor;
 import com.jdbc.mantenimiento.input.Teclado;
 
 public class Operaciones {
+	
+	private static Teclado teclado = new Teclado();
+	private static Conversor conversor = new Conversor();
 
 	public static int pideNumero() {
-		Teclado teclado = new Teclado();
-		Conversor conversor = new Conversor();
 		int numero;
 		do {
 			System.out.println("Introduce el número:");
@@ -19,7 +20,6 @@ public class Operaciones {
 	}
 
 	public static String pideNombre() {
-		Teclado teclado = new Teclado();
 		String nombre;
 		do {
 			System.out.println("Introduce el nombre:");
@@ -29,7 +29,6 @@ public class Operaciones {
 	}
 
 	public static String pideSexo() {
-		Teclado teclado = new Teclado();
 		String nombre;
 		do {
 			System.out.println("Introduce el sexo (H/M):");
@@ -39,8 +38,6 @@ public class Operaciones {
 	}
 
 	public static int pideEdad() {
-		Teclado teclado = new Teclado();
-		Conversor conversor = new Conversor();
 		int edad;
 		do {
 			System.out.println("Introduce la edad:");
@@ -60,8 +57,6 @@ public class Operaciones {
 	}
 
 	public static Alumno modificacionDatosAlumno(Alumno unAlumno) {
-		Teclado teclado = new Teclado();
-		Conversor conversor = new Conversor();
 		int opcion;
 
 		do {

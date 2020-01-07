@@ -7,9 +7,8 @@ import com.jdbc.mantenimiento.entidad.Alumno;
 public class FileAlumnoDao implements Dao<Alumno> {
 
 	@Override
-	public Alumno create(Alumno t) {
-		System.out.println("Holiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-		return null;
+	public void create(Alumno t) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -19,9 +18,8 @@ public class FileAlumnoDao implements Dao<Alumno> {
 	}
 
 	@Override
-	public Alumno update(Alumno t) {
+	public void update(Alumno t) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -32,6 +30,18 @@ public class FileAlumnoDao implements Dao<Alumno> {
 
 	@Override
 	public ArrayList<Alumno> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Alumno createAndRead(Alumno t) {
+		System.out.println("Holiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii, voy a guardar este alumno en un fichero: "+t);
+		return null;
+	}
+
+	@Override
+	public Alumno updateAndRead(Alumno t) {
 		// TODO Auto-generated method stub
 		return null;
 	}

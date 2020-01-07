@@ -1,7 +1,6 @@
 package com.jdbc.mantenimiento.dao;
 
 import java.sql.Connection;
-
 import com.jdbc.mantenimiento.conexion.ConexionMySQL;
 import com.jdbc.mantenimiento.entidad.Alumno;
 

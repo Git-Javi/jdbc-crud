@@ -15,7 +15,7 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 	final String UPDATE = "UPDATE alumnos SET nombre=?, sexo=?, edad=? WHERE numero=?";
 	final String DELETE = "DELETE FROM alumnos WHERE numero = ?";
 	final String READ_ALL = "SELECT * FROM alumnos";
-	
+
 	private Connection cone;
 
 	public MySQLAlumnoDAO(Connection cone) {
@@ -23,8 +23,7 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 	}
 
 	@Override
-	public Alumno create(Alumno unAlumno) {
-		Alumno alumnoDevuelto = null;
+	public void create(Alumno unAlumno) {
 		if (!alumnoExists(unAlumno.getNumero())) {
 			try (PreparedStatement ps = cone.prepareStatement(CREATE)) {
 				ps.setInt(1, unAlumno.getNumero());
@@ -39,11 +38,9 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 			} catch (SQLException sqlex) {
 				System.err.println("No se ha podido dar de alta al alumno. " + sqlex.getMessage());
 			}
-			alumnoDevuelto = read(unAlumno.getNumero());
 		} else {
 			System.out.println("Ya existe un alumno con el número " + unAlumno.getNumero() + ".");
 		}
-		return alumnoDevuelto;
 	}
 
 	@Override
@@ -70,29 +67,26 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 	}
 
 	@Override
-	public Alumno update(Alumno unAlumno) {
-		Alumno alumnoDevuelto = new Alumno();
-			try(PreparedStatement ps = cone.prepareStatement(UPDATE)){
-				ps.setInt(4, unAlumno.getNumero());
-				ps.setString(1, unAlumno.getNombre());
-				ps.setString(2, unAlumno.getSexo());
-				ps.setInt(3, unAlumno.getEdad());
-				if (ps.executeUpdate() != 1) {
-					System.out.println("No se ha podido modificar al alumno.");
-				} else {
-					System.out.println("Alumno modificado correctamente.");
-				}
-			} catch(SQLException sqlex) {
-				System.err.println("No se ha podido actualizar los datos del alumno. " + sqlex.getMessage());
+	public void update(Alumno unAlumno) {
+		try (PreparedStatement ps = cone.prepareStatement(UPDATE)) {
+			ps.setInt(4, unAlumno.getNumero());
+			ps.setString(1, unAlumno.getNombre());
+			ps.setString(2, unAlumno.getSexo());
+			ps.setInt(3, unAlumno.getEdad());
+			if (ps.executeUpdate() != 1) {
+				System.out.println("No se ha podido modificar al alumno.");
+			} else {
+				System.out.println("Alumno modificado correctamente.");
 			}
-			alumnoDevuelto = read(unAlumno.getNumero());
-		return alumnoDevuelto;
+		} catch (SQLException sqlex) {
+			System.err.println("No se ha podido actualizar los datos del alumno. " + sqlex.getMessage());
+		}
 	}
 
 	@Override
 	public void delete(int id) {
 		if (alumnoExists(id)) {
-			try(PreparedStatement ps = cone.prepareStatement(DELETE)){
+			try (PreparedStatement ps = cone.prepareStatement(DELETE)) {
 				ps.setInt(1, id);
 				if (ps.executeUpdate() != 1) {
 					System.out.println("No se ha podido borrar el alumno.");
@@ -100,7 +94,7 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 					System.out.println("Alumno eliminado correctamente.");
 				}
 			} catch (SQLException sqlex) {
-				System.err.println("No se ha podido borrar al alumno. " +sqlex);
+				System.err.println("No se ha podido borrar al alumno. " + sqlex);
 			}
 		} else {
 			System.out.println("No existe un alumno con el número " + id + ".");
@@ -113,17 +107,33 @@ public class MySQLAlumnoDAO implements Dao<Alumno> {
 		try (Statement state = cone.createStatement()) {
 			ResultSet rs = state.executeQuery(READ_ALL);
 			while (rs.next()) {
-				listaAlumnos.add(new Alumno(
-						rs.getInt("numero"),
-						rs.getString("nombre"),
-						rs.getString("sexo"),
-						rs.getInt("edad"))
-				);
+				listaAlumnos.add(new Alumno(rs.getInt("numero"), rs.getString("nombre"), rs.getString("sexo"),
+						rs.getInt("edad")));
 			}
 		} catch (SQLException sqlex) {
 			System.err.println("No se han podido recuperar los alumnos de la tabla. " + sqlex.getMessage());
 		}
 		return listaAlumnos;
+	}
+	
+	@Override
+	public Alumno createAndRead(Alumno unAlumno) {
+		Alumno alumnoDevuelto = null;
+		if (!alumnoExists(unAlumno.getNumero())) {
+			create(unAlumno); // Llamo al propio método Create del CRUD
+			alumnoDevuelto = read(unAlumno.getNumero());
+		} else {
+			System.out.println("Ya existe un alumno con el número " + unAlumno.getNumero() + ".");
+		}
+		return alumnoDevuelto;
+	}
+
+	@Override
+	public Alumno updateAndRead(Alumno unAlumno) {
+		Alumno alumnoDevuelto = new Alumno();
+		update(unAlumno); // Llamo al propio método Update del CRUD
+		alumnoDevuelto = read(unAlumno.getNumero());
+		return alumnoDevuelto;
 	}
 
 	private boolean alumnoExists(int id) {

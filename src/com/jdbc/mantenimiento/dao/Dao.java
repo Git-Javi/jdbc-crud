@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public interface Dao<T> {
 
-	public T create(T t);
+	public void create(T t);
 	public T read(int id);
-	public T update(T t);
+	public void update(T t);
 	public void delete(int id);
 	public ArrayList<T> findAll();
+	public T createAndRead(T t);
+	public T updateAndRead(T t);
 }
 
 

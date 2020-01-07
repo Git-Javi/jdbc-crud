@@ -14,7 +14,7 @@ public class Mantenimiento {
 	private Dao<Alumno> mySQLAlumnoDAO = mySQLDaoManager.getAlumnoDAO();
 
 	public void alta() {
-		Alumno alumnoDevuelto = mySQLAlumnoDAO.create(Operaciones.pideDatosDevuelveAlumno());
+		Alumno alumnoDevuelto = mySQLAlumnoDAO.createAndRead(Operaciones.pideDatosDevuelveAlumno());
 		Operaciones.muestraAlumno(alumnoDevuelto);
 	}
 
@@ -31,7 +31,7 @@ public class Mantenimiento {
 		Alumno alumnoTmp = mySQLAlumnoDAO.read(Operaciones.pideNumero());
 		Operaciones.muestraAlumno(alumnoTmp);
 		if (alumnoTmp != null) {
-			Alumno alumnoDevuelto = mySQLAlumnoDAO.update(Operaciones.modificacionDatosAlumno(alumnoTmp));
+			Alumno alumnoDevuelto = mySQLAlumnoDAO.updateAndRead(Operaciones.modificacionDatosAlumno(alumnoTmp));
 			Operaciones.muestraAlumno(alumnoDevuelto);
 		}
 	}
